@@ -84,4 +84,21 @@ public class CrudExamples {
      System.out.println(response.asPrettyString());
 	}
 	
+	@Test(priority = 4, dependsOnMethods = "postATodoMessage")
+	public void deleteTodo() {
+		
+		Response response=	
+				given().
+					header("Content-Type", "application/json"). 			
+				when(). 
+					delete("api/delete/"+id).
+				then(). 
+					statusCode(200).
+					body("msg",is( equalTo("Event deleted."))).
+			extract().response();
+	
+		System.out.println(response.asPrettyString());	
+		
+		
+	}
 }
