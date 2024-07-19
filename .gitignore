@@ -1,0 +1,10 @@
+.classpath
+.project
+.settings/
+bin/
+db.properties
+target/
+test-output/
+credentials.properties
+screenshots/
+logs/
