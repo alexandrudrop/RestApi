@@ -3,6 +3,8 @@ package tests;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
 
+import java.util.List;
+
 import org.testng.annotations.Test;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -71,6 +73,53 @@ public class HamcrestExample {
 		assertThat(response.asString(), containsStringIgnoringCase("ArID"));
 		
 		assertThat(response.asString(), stringContainsInOrder("rotation_period", "orbital_period"));
+		
+		//allOf
+		String url = json.getString("url");
+		//assertThat(url, allOf(StartsWith()))
+		
+		
+		List<String> films = json.getList("films");
+		System.out.println(films.get(0));
+		
+		assertThat(films, contains("https://swapi.dev/api/films/1/", 
+		        "https://swapi.dev/api/films/3/", 
+		        "https://swapi.dev/api/films/4/", 
+		        "https://swapi.dev/api/films/5/", 
+		        "https://swapi.dev/api/films/6/"));
+		
+		assertThat(films, hasSize(5));
+		assertThat(films, hasSize(lessThan(10)));
+		assertThat(films, hasSize(greaterThan(3)));
+		
+		assertThat(films, both(hasSize(lessThan(6))).and(hasToString(containsString("films/6/"))));
+		
+		assertThat(films, contains(startsWithIgnoringCase("HTTPS:"), 
+				containsString("swapi"),
+				equalTo("https://swapi.dev/api/films/4/"),
+				endsWith("/5/"),
+				is(not(equalTo("ABC")))));
+		
+		assertThat(films, hasItem("https://swapi.dev/api/films/4/"));
+		
+		assertThat(films, hasItems("https://swapi.dev/api/films/1/", "https://swapi.dev/api/films/5/"));
+		
+		assertThat(films, hasItem(startsWith("http")));
+		assertThat(films, hasItem(endsWith("/6/")));
+		assertThat(films, hasItem(containsString("swapi.dev")));
+		
+		assertThat(films, is(not(emptyCollectionOf(String.class))));
+		
+		//array
+		String[] array = {json.getString("name"), json.getString("diameter"), json.getString("climate"), 
+				json.getString("gravity"), json.getString("terrain")};
+		System.out.println(array[2]);
+		
+		assertThat(array, arrayContaining("Tatooine", "10465", "arid", "1 standard", "desert"));
+		
+		assertThat(array, arrayContainingInAnyOrder("arid", "Tatooine", "10465", "1 standard", "desert"));
+		
+		assertThat(array, is(not(nullValue())));
 		
 	}
 }
