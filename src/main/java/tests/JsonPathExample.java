@@ -91,6 +91,7 @@ public class JsonPathExample {
 		System.out.println(json.getString("users.find{it.name == 'Vincent'}"));
 		
 		//comment pe master branch
+		//comment on branch testconflict
 		
 	}
 
