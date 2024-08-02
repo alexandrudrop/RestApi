@@ -4,6 +4,8 @@ import org.json.simple.JSONObject;
 
 import com.github.javafaker.Faker;
 
+import utils.PropertiesFileProcessor;
+
 public class DataBuilder {
 
 	
@@ -17,6 +19,19 @@ public class DataBuilder {
 		bodyBuilder.put("gender", "m");
 		
 		return bodyBuilder;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static JSONObject buildToken() {
+		
+		String user = PropertiesFileProcessor.readPropertiesFile("user", "credentials.properties");
+		String pass = PropertiesFileProcessor.readPropertiesFile("pass", "credentials.properties");
+		
+		JSONObject tokenBuilder = new JSONObject();
+		tokenBuilder.put("user", user);
+		tokenBuilder.put("pass", pass);
+		
+		return tokenBuilder;
 	}
 	
 	

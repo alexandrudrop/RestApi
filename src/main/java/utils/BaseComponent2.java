@@ -8,6 +8,7 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import testdata.DataBuilder;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -15,14 +16,25 @@ public class BaseComponent2 {
 
 	public static RequestSpecification requestSpec;
 	public static ResponseSpecification responseSpec;
+	String token;
 	
 	@BeforeClass
 	public void setup() {
 		
+		Response response = given().
+				contentType(ContentType.JSON).
+				body(DataBuilder.buildToken().toJSONString()).
+				post("https://dev-todo-b369f85c9f07.herokuapp.com/api/login").
+				then().extract().response();
+		
+		token = response.jsonPath().getString("token");
+		
+		
 		requestSpec = new RequestSpecBuilder().
-				setBaseUri("https://keytrcrud.herokuapp.com/").
-				setBasePath("api/users/").
+				setBaseUri("https://dev-todo-b369f85c9f07.herokuapp.com/").
+				setBasePath("api/").
 				setContentType(ContentType.JSON). 
+				addHeader("Authorization", "Bearer " + token).
 				addHeader("accept", "application/json").build();
 				
 		responseSpec = new ResponseSpecBuilder(). 
@@ -31,14 +43,14 @@ public class BaseComponent2 {
 	}
 	
 	
-	public static Response doPostRequest(String body) {
+	public static Response doPostRequest(String body, String path) {
 		
 		Response resp = 
 				given()
 					.spec(requestSpec)
 					.body(body)
 				.when()
-					.post()
+					.post(path)
 				.then() 
 				   .spec(responseSpec)
 				   .extract().response();		
