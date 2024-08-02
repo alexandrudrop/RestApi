@@ -90,6 +90,8 @@ public class JsonPathExample {
 		//findAll aduce o lista, ii aduce pe toti
 		System.out.println(json.getString("users.find{it.name == 'Vincent'}"));
 		
+		//comment on branch testconflict
+		
 	}
 
 }
